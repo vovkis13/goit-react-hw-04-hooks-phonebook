@@ -28,10 +28,12 @@ export default function App() {
 
   const addItemToContacts = (e, newName, newNumber) => {
     e.preventDefault();
+    
     const found = contacts.find(
       ({ name }) => name.toLowerCase() === newName.toLowerCase(),
     );
     if (found) return window.alert(`${newName} is already in contacts.`);
+
     setContacts(prevState => [
       { id: nanoid(), name: newName, number: newNumber },
       ...prevState,
