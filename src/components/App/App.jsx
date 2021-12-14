@@ -6,15 +6,15 @@ import Filter from '../Filter';
 import ContactList from '../ContactList/';
 
 export default function App() {
+  const CONTACTS = 'contacts';
   const [contacts, setContacts] = useState(
-    () => JSON.parse(localStorage.getItem('contacts')),
-    [],
+    () => JSON.parse(localStorage.getItem(CONTACTS)) ?? [],
   );
   const [filter, setFilter] = useState('');
   const [filteredContacts, setFilteredContacts] = useState(() => contacts, []);
 
   useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
+    localStorage.setItem(CONTACTS, JSON.stringify(contacts));
     setFilter('');
   }, [contacts]);
 
@@ -28,7 +28,7 @@ export default function App() {
 
   const addItemToContacts = (e, newName, newNumber) => {
     e.preventDefault();
-    
+
     const found = contacts.find(
       ({ name }) => name.toLowerCase() === newName.toLowerCase(),
     );
@@ -55,10 +55,12 @@ export default function App() {
       <ContactForm onFormSubmit={addItemToContacts} />
       <h2>Contacts</h2>
       <Filter filter={filter} onChangeFilterValue={setFilterValue} />
-      <ContactList
-        filteredContacts={filteredContacts}
-        deleteContact={deleteItemFromContacts}
-      />
+      {filteredContacts && (
+        <ContactList
+          filteredContacts={filteredContacts}
+          deleteContact={deleteItemFromContacts}
+        />
+      )}
     </div>
   );
 }
