@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 
 import ContactForm from '../ContactForm';
@@ -11,6 +11,10 @@ export default function App() {
     () => JSON.parse(localStorage.getItem(CONTACTS)) ?? [],
   );
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem(CONTACTS, JSON.stringify(contacts));
+  }, [contacts]);
 
   const addItemToContacts = (e, newName, newNumber) => {
     e.preventDefault();
@@ -36,8 +40,11 @@ export default function App() {
   const setFilterValue = e => setFilter(e.target.value);
 
   const filterContacts = () => {
-    return contacts.toLowerCase().includes(filter.toLowerCase());
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase()),
+    );
   };
+  const filteredContacts = filterContacts();
   return (
     <div>
       <h1>Phonebook</h1>
@@ -46,7 +53,7 @@ export default function App() {
       <Filter filter={filter} onChangeFilterValue={setFilterValue} />
       {contacts && (
         <ContactList
-          filteredContacts={filterContacts()}
+          filteredContacts={filteredContacts}
           deleteContact={deleteItemFromContacts}
         />
       )}
