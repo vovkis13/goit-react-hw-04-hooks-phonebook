@@ -7,8 +7,9 @@ export default function ContactForm({ onFormSubmit }) {
   const [number, setNumber] = useState('');
 
   const handleChange = e => {
-    if (e.target.name === 'name') setName(e.target.value);
-    else if (e.target.name === 'number') setNumber(e.target.value);
+    const { name, value } = e.target;
+    if (name === 'name') setName(value);
+    else if (name === 'number') setNumber(value);
   };
 
   const handleSubmit = e => {

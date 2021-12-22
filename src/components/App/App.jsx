@@ -19,10 +19,10 @@ export default function App() {
   const addItemToContacts = (e, newName, newNumber) => {
     e.preventDefault();
 
-    const found = contacts.find(
+    const isFound = contacts.find(
       ({ name }) => name.toLowerCase() === newName.toLowerCase(),
     );
-    if (found) return window.alert(`${newName} is already in contacts.`);
+    if (isFound) return window.alert(`${newName} is already in contacts.`);
 
     setContacts(prevState => [
       { id: nanoid(), name: newName, number: newNumber },
@@ -33,7 +33,7 @@ export default function App() {
   const deleteItemFromContacts = e => {
     e.preventDefault();
     setContacts(prevState =>
-      prevState.filter(contact => contact.id !== e.target.value),
+      prevState.filter(({ id }) => id !== e.target.value),
     );
   };
 
